@@ -5,8 +5,6 @@ package es.ucm.artivism.service;
 
 import java.util.List;
 
-import javax.servlet.ServletContext;
-
 import es.ucm.artivism.data.PostVO;
 
 /**

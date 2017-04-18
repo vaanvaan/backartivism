@@ -15,8 +15,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.ServletContext;
-
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
@@ -33,8 +31,7 @@ public class DirectoryGetter {
 		
 		String id = "GRUMPY";
 		String title = "Grumpy cat";
-		String imgUrl = baseUrl+"img/"+ "grumpyCatIco";
-		String fileUrl = baseUrl+"img/" + "grumpyCatIco.jpg";
+		String imgUrl = baseUrl+"/img/"+ "grumpyCatIco.jpg";
 		String description = "This is an example, programmed post, for demo and debugging purposes.";
 		String location = "Pastoor Peterstraat 127, Eindhoven";
 		String author = "Ivan Mikovski";
@@ -50,7 +47,7 @@ public class DirectoryGetter {
 				e.printStackTrace();
 			}
 		}
-		PostVO example = new PostVO(id, title, imgUrl, fileUrl, description, location, author,longitude, latitude);
+		PostVO example = new PostVO(id, title, imgUrl, description, location, author,longitude, latitude);
 			
 		ArrayList<PostVO> result = new ArrayList<PostVO>();
 		result.add(example);

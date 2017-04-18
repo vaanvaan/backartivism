@@ -19,7 +19,6 @@ public class PostVO implements Serializable{
 	private String id;
 	private String title;
 	private String imgUrl;
-	private String fileUrl;
 	private String description;
 	private String location;
 	private String author;
@@ -27,13 +26,11 @@ public class PostVO implements Serializable{
 	private Float latitude;
 	
 	
-	public PostVO(final String id, final String title, final String imgUrl, final String fileUrl,
-			final String description, final String location, final String author, final Float longitude,
-			final Float latitude) {
+	public PostVO(final String id, final String title, final String imgUrl, final String description,
+			final String location, final String author, final Float longitude, final Float latitude) {
 		this.id = id;
 		this.title = title;
 		this.imgUrl = imgUrl;
-		this.fileUrl = fileUrl;
 		this.description = description;
 		this.location = location;
 		this.author = author;
@@ -75,18 +72,6 @@ public class PostVO implements Serializable{
 	 */
 	public void setImgUrl(String imgUrl) {
 		this.imgUrl = imgUrl;
-	}
-	/**
-	 * @return the fileUrl
-	 */
-	public String getFileUrl() {
-		return fileUrl;
-	}
-	/**
-	 * @param fileUrl the fileUrl to set
-	 */
-	public void setFileUrl(String fileUrl) {
-		this.fileUrl = fileUrl;
 	}
 	/**
 	 * @return the description
