@@ -28,13 +28,13 @@ import es.ucm.artivism.data.PostVO;
  */
 public class DirectoryGetter {
 
-	public List<PostVO> getPosts(final Integer maxPosts, final ServletContext servletContext) {
+	public List<PostVO> getPosts(final Integer maxPosts, final String baseUrl) {
 		
 		
 		String id = "GRUMPY";
 		String title = "Grumpy cat";
-		String imgUrl = servletContext.getRealPath("/")+"imgs/"+ "grumpyCatIco";
-		String fileUrl = servletContext.getRealPath("/")+"imgs/" + "grumpyCatIco.jpg";
+		String imgUrl = baseUrl+"img/"+ "grumpyCatIco";
+		String fileUrl = baseUrl+"img/" + "grumpyCatIco.jpg";
 		String description = "This is an example, programmed post, for demo and debugging purposes.";
 		String location = "Pastoor Peterstraat 127, Eindhoven";
 		String author = "Ivan Mikovski";

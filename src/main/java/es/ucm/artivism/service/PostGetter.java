@@ -23,9 +23,9 @@ public class PostGetter {
 		twitter = new TwitterGetter();
 	}
 
-	public List<PostVO> getPostsFromSources(final Integer maxPosts, final ServletContext servletContext) {
-		System.out.println("Looking for the path: "+ servletContext.getRealPath("/")+"imgs/");
-		List<PostVO> uploadedPosts = localDirectory.getPosts(maxPosts, servletContext);
+	public List<PostVO> getPostsFromSources(final Integer maxPosts, final String baseUrl) {
+		System.out.println("Looking for the path: "+ baseUrl + "img/");
+		List<PostVO> uploadedPosts = localDirectory.getPosts(maxPosts, baseUrl);
 		List<PostVO> twitterPosts = twitter.getPosts(maxPosts);
 //		File file = new File(servletContext.getRealPath("/")+"imgs/");
 		return uploadedPosts;

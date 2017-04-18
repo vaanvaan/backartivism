@@ -48,23 +48,23 @@ public class GatherPostsServlet extends HttpServlet{
 //		if(tQuery == null || "".equals(tQuery)){
 //			tQuery = "No DATA";
 //		}
-		
-		List<PostVO> posts = obtainPosts();
+		String baseUrl = request.getScheme() + "://" + request.getServerName() + request.getContextPath();
+		List<PostVO> posts = obtainPosts(baseUrl);
 		Gson gson = new Gson();
 		String responseData = gson.toJson(posts);
 		response.setContentType("application/json");
 		response.getWriter().write(responseData);
 	}
 
-	private List<PostVO> obtainPosts() {
+	private List<PostVO> obtainPosts(final String baseUrl) {
 		if(postsInMemory.isEmpty() || lastUpdate == null){
-			postsInMemory = getter.getPostsFromSources(MAX_POSTS, this.getServletContext());
+			postsInMemory = getter.getPostsFromSources(MAX_POSTS, baseUrl);
 			lastUpdate = Calendar.getInstance().getTimeInMillis();
 		}else{
 			Long diff = Calendar.getInstance().getTimeInMillis() - lastUpdate; 
 			long diffMinutes = diff / (60 * 1000) % 60; 
 			if (diffMinutes > 360*4){ //24h
-				postsInMemory = getter.getPostsFromSources(MAX_POSTS, this.getServletContext());
+				postsInMemory = getter.getPostsFromSources(MAX_POSTS, baseUrl);
 				lastUpdate = Calendar.getInstance().getTimeInMillis();
 			}
 		}
