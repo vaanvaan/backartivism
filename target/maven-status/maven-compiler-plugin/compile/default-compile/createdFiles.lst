@@ -1,0 +1,5 @@
+es\ucm\artivism\data\PostVO.class
+es\ucm\artivism\service\TwitterGetter.class
+es\ucm\artivism\service\DirectoryGetter.class
+es\ucm\artivism\service\GatherPostsServlet.class
+es\ucm\artivism\service\PostGetter.class
