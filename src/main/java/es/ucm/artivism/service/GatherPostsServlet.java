@@ -63,7 +63,7 @@ public class GatherPostsServlet extends HttpServlet{
 		}else{
 			Long diff = Calendar.getInstance().getTimeInMillis() - lastUpdate; 
 			long diffMinutes = diff / (60 * 1000) % 60; 
-			if (diffMinutes > 360*4){ //24h
+			if (diffMinutes > 360*4/480){ //24h -> 3 min
 				postsInMemory = getter.getPostsFromSources(MAX_POSTS, baseUrl);
 				lastUpdate = Calendar.getInstance().getTimeInMillis();
 			}
