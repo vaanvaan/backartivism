@@ -142,9 +142,9 @@ public class DirectoryGetter {
         System.out.println(response.toString());
         JsonParser parser = new JsonParser();
         JsonArray array = parser.parse(response.toString()).getAsJsonArray();
-        System.out.println("geo data response "+ array);
+        System.out.println(address + " geo data response "+ array);
         JsonObject obj = null;
-        if(!array.isJsonNull()){
+        if(!array.isJsonNull() && array.size() > 0){
         	obj = array.get(0).getAsJsonObject();
         }
         Map<String, Float> result = new HashMap<String, Float>();
