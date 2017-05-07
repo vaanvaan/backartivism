@@ -12,12 +12,15 @@ import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.HashMap;
@@ -40,6 +43,8 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.imgscalr.Scalr;
 import org.json.JSONArray;
 import org.json.JSONObject;
+
+import com.google.gson.Gson;
 
 import es.ucm.artivism.data.PostVO;
 
@@ -97,7 +102,7 @@ public class UploadServlet extends HttpServlet {
                 op.close();
             }
         } else if (request.getParameter("delfile") != null && !request.getParameter("delfile").isEmpty()) {
-            File file = new File(filepath + request.getParameter("delfile"));
+            File file = new File(filepath + File.separator + request.getParameter("delfile"));
             if (file.exists()) {
                 file.delete(); // TODO:check and report success
             } 
@@ -134,6 +139,62 @@ public class UploadServlet extends HttpServlet {
                     }
             } // TODO: check and report success
         } else {
+//          Path path = Paths.get(System.getProperty("user.home"), "uploads");
+//  		File folder = new File(path.toString());
+//  		File[] listOfFiles = folder.listFiles();
+//  		List<File> infoFiles = new ArrayList<>();
+//  		for (int i = 0; i < listOfFiles.length; i++) {
+//  			if (listOfFiles[i].isFile()) {
+//  				File file = listOfFiles[i];
+//  				String fileName = file.getName();
+//  				if (fileName.endsWith("_info.txt")){
+//  					infoFiles.add(file);
+//  				}
+//  				System.out.println("File " + fileName);
+//  			} else if (listOfFiles[i].isDirectory()) {
+//  				System.out.println("Directory " + listOfFiles[i].getName());
+//  			}
+//  	    }
+//  		Gson gson = new Gson();
+//  		List<PostVO> posts = new ArrayList<>();
+//		for(File f : infoFiles){
+//			try {
+//				FileReader reader = new FileReader(f);
+//				List<String> lines = Files.readAllLines(Paths.get(f.getAbsolutePath()));
+//				for(String line : lines){
+//					if(line != null && !line.isEmpty()){
+//						System.out.println(line);
+//						PostVO post = gson.fromJson(line, PostVO.class);
+//						posts.add(post);
+//					}
+//				}
+//			} catch (FileNotFoundException e) {
+//				System.out.println(e);
+//				e.printStackTrace();
+//			} catch (IOException e) {
+//				System.out.println(e);
+//				e.printStackTrace();
+//			}
+//		}
+//		String aux = "{\"files\": %s }";
+//        	{"files": [
+//        	           {
+//        	             "name": "picture1.jpg",
+//        	             "size": 902604,
+//        	             "url": "http:\/\/example.org\/files\/picture1.jpg",
+//        	             "thumbnailUrl": "http:\/\/example.org\/files\/thumbnail\/picture1.jpg",
+//        	             "deleteUrl": "http:\/\/example.org\/files\/picture1.jpg",
+//        	             "deleteType": "DELETE"
+//        	           },
+//        	           {
+//        	             "name": "picture2.jpg",
+//        	             "size": 841946,
+//        	             "url": "http:\/\/example.org\/files\/picture2.jpg",
+//        	             "thumbnailUrl": "http:\/\/example.org\/files\/thumbnail\/picture2.jpg",
+//        	             "deleteUrl": "http:\/\/example.org\/files\/picture2.jpg",
+//        	             "deleteType": "DELETE"
+//        	           }
+//        	         ]}
             PrintWriter writer = response.getWriter();
             writer.write("call POST with multipart form data");
         }
@@ -143,10 +204,9 @@ public class UploadServlet extends HttpServlet {
         * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
         * 
         */
-    @SuppressWarnings("unchecked")
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+    	String baseUrl = request.getScheme() + "://" + request.getServerName() + request.getContextPath();
         if (!ServletFileUpload.isMultipartContent(request)) {
             throw new IllegalArgumentException("Request is not multipart, please 'multipart/form-data' enctype for your form.");
         }
@@ -190,10 +250,11 @@ public class UploadServlet extends HttpServlet {
                         JSONObject jsono = new JSONObject();
                         jsono.put("name", item.getName());
                         jsono.put("size", item.getSize());
-                        jsono.put("url", "UploadServlet?getfile=" + itemName);
+                        jsono.put("url", baseUrl + File.separator + itemName);
                         jsono.put("thumbnail_url", "UploadServlet?getthumb=" + itemName);
                         jsono.put("delete_url", "UploadServlet?delfile=" + itemName);
                         jsono.put("delete_type", "GET");
+                        jsono.put("author", "Ivan");
                         json.put(jsono);
                         System.out.println(json.toString());
                         System.out.println(itemName);
@@ -235,7 +296,8 @@ public class UploadServlet extends HttpServlet {
     		String description = fieldData.get("description").toString();
     		String location = fieldData.get("location").toString();
     		String author = fieldData.get("author").toString();
-    		PostVO post = new PostVO(id, title, imgUrl, description, location, null, null, null);
+    		Long uploadedTime = Calendar.getInstance().getTimeInMillis();
+    		PostVO post = new PostVO(id, title, imgUrl, description, location, author, uploadedTime, null, null);
     		try (FileWriter fileInfo = new FileWriter(filepath + File.separator + image +  "_info.txt")) {
         		fileInfo.write(post.toString());
         		System.out.println("Successfully Copied JSON Object to File...");

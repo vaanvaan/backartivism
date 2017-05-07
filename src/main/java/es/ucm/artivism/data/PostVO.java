@@ -24,10 +24,11 @@ public class PostVO implements Serializable{
 	private String author;
 	private Float longitude;
 	private Float latitude;
+	private Long uploadedTime;
 	
 	
 	public PostVO(final String id, final String title, final String imgUrl, final String description,
-			final String location, final String author, final Float longitude, final Float latitude) {
+			final String location, final String author, final Long uploadedTime, final Float longitude, final Float latitude) {
 		this.id = id;
 		this.title = title;
 		this.imgUrl = imgUrl;
@@ -35,7 +36,9 @@ public class PostVO implements Serializable{
 		this.location = location;
 		this.author = author;
 		this.longitude = longitude;
+		this.uploadedTime = uploadedTime;
 		this.latitude = latitude;
+		
 	}
 	/**
 	 * @return the id
@@ -141,6 +144,18 @@ public class PostVO implements Serializable{
 	public String toString() {
 		Gson gson = new Gson();
 		return gson.toJson(this);
+	}
+	/**
+	 * @return the uploadedTime
+	 */
+	public Long getUploadedTime() {
+		return uploadedTime;
+	}
+	/**
+	 * @param uploadedTime the uploadedTime to set
+	 */
+	public void setUploadedTime(Long uploadedTime) {
+		this.uploadedTime = uploadedTime;
 	}
 	
 }

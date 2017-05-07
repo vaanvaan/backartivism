@@ -17,6 +17,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -60,6 +61,20 @@ public class DirectoryGetter {
 					if(line != null && !line.isEmpty()){
 						System.out.println(line);
 						PostVO post = gson.fromJson(line, PostVO.class);
+						Float longitude = post.getLongitude();
+						Float latitude = post.getLatitude();
+						String location = post.getLocation();
+						if((longitude == null || latitude == null) && location != null && !location.isEmpty()){
+							try {
+								Map<String, Float> geoData = invokeGeoService(location);
+								longitude = geoData.get("longitude");
+								latitude = geoData.get("latitude");
+							} catch (IOException e) {
+								System.out.println(e);
+								e.printStackTrace();
+							}
+						}
+						
 						result.add(post);
 					}
 				}
@@ -71,28 +86,29 @@ public class DirectoryGetter {
 				e.printStackTrace();
 			}
 		}
-		String id = "GRUMPY";
-		String title = "Grumpy cat";
-		String imgUrl = baseUrl+"/img/"+ "grumpyCatIco.jpg";
-		String description = "This is an example, programmed post, for demo and debugging purposes.";
-		String location = "Pastoor Peterstraat 127, Eindhoven";
-		String author = "Ivan Mikovski";
-		Float longitude = null;
-		Float latitude = null;
-		if((longitude == null || latitude == null) && location != null && !location.isEmpty()){
-			try {
-				Map<String, Float> geoData = invokeGeoService(location);
-				longitude = geoData.get("longitude");
-				latitude = geoData.get("latitude");
-			} catch (IOException e) {
-				System.out.println(e);
-				e.printStackTrace();
-			}
-		}
-		PostVO example = new PostVO(id, title, imgUrl, description, location, author,longitude, latitude);
+//		String id = "GRUMPY";
+//		String title = "Grumpy cat";
+//		String imgUrl = baseUrl+"/img/"+ "grumpyCatIco.jpg";
+//		String description = "This is an example, programmed post, for demo and debugging purposes.";
+//		String location = "Pastoor Peterstraat 127, Eindhoven";
+//		String author = "Ivan Mikovski";
+//		Long uploadedTime = Calendar.getInstance().getTimeInMillis();
+//		Float longitude = null;
+//		Float latitude = null;
+//		if((longitude == null || latitude == null) && location != null && !location.isEmpty()){
+//			try {
+//				Map<String, Float> geoData = invokeGeoService(location);
+//				longitude = geoData.get("longitude");
+//				latitude = geoData.get("latitude");
+//			} catch (IOException e) {
+//				System.out.println(e);
+//				e.printStackTrace();
+//			}
+//		}
+//		PostVO example = new PostVO(id, title, imgUrl, description, location, author, uploadedTime, longitude, latitude);
 			
 		
-		result.add(example);
+//		result.add(example);
 		return result;
 	}
 	
