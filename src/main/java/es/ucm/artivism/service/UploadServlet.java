@@ -12,15 +12,12 @@ import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.HashMap;
@@ -43,8 +40,6 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.imgscalr.Scalr;
 import org.json.JSONArray;
 import org.json.JSONObject;
-
-import com.google.gson.Gson;
 
 import es.ucm.artivism.data.PostVO;
 
@@ -206,7 +201,11 @@ public class UploadServlet extends HttpServlet {
         */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    	String baseUrl = request.getScheme() + "://" + request.getServerName() + request.getContextPath();
+    	String baseUrl = request.getScheme() + "://" + request.getServerName();
+    	if(request.getServerName().equalsIgnoreCase("localhost")){
+    		baseUrl = baseUrl +":"+request.getLocalPort();
+    	}
+    	baseUrl = baseUrl + request.getContextPath();
         if (!ServletFileUpload.isMultipartContent(request)) {
             throw new IllegalArgumentException("Request is not multipart, please 'multipart/form-data' enctype for your form.");
         }
@@ -237,7 +236,7 @@ public class UploadServlet extends HttpServlet {
             			fieldData = Collections.synchronizedMap(new HashMap<String, String>());
             		}
             		fieldData.put(field, value);
-            		fieldData.put("URL", "UploadServlet?getfile=" + imageName);
+            		fieldData.put("URL", baseUrl + "/img/"+ imageName);
             		fieldData.put("filePath", filepath + File.separator + imageName);
             		fieldData.put("id", Calendar.getInstance().getTimeInMillis() + "_" + imageName);
             		postData.put(imageName, fieldData);
@@ -250,7 +249,7 @@ public class UploadServlet extends HttpServlet {
                         JSONObject jsono = new JSONObject();
                         jsono.put("name", item.getName());
                         jsono.put("size", item.getSize());
-                        jsono.put("url", baseUrl + File.separator + itemName);
+                        jsono.put("url", baseUrl + "/img/"+  itemName);
                         jsono.put("thumbnail_url", "UploadServlet?getthumb=" + itemName);
                         jsono.put("delete_url", "UploadServlet?delfile=" + itemName);
                         jsono.put("delete_type", "GET");
@@ -263,7 +262,7 @@ public class UploadServlet extends HttpServlet {
                 		if(fieldData == null){
                 			fieldData = Collections.synchronizedMap(new HashMap<String, String>());
                 		}
-                		fieldData.put("URL", "UploadServlet?getfile=" + itemName);
+//                		fieldData.put("URL", "UploadServlet?getfile=" + itemName);
                 		fieldData.put("filePath", filepath + File.separator + itemName);
                 		fieldData.put("id", Calendar.getInstance().getTimeInMillis() + "_" + itemName);
                 		postData.put(itemName, fieldData);
