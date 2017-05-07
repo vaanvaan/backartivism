@@ -17,12 +17,12 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
@@ -141,14 +141,26 @@ public class DirectoryGetter {
         
         System.out.println(response.toString());
         JsonParser parser = new JsonParser();
-        JsonObject obj = parser.parse(response.toString()).getAsJsonArray().get(0).getAsJsonObject();
-        String longitude = obj.get("lon").getAsString(); // works for url2
-        String latitude = obj.get("lat").getAsString();
+        JsonArray array = parser.parse(response.toString()).getAsJsonArray();
+        System.out.println("geo data response "+ array);
+        JsonObject obj = null;
+        if(!array.isJsonNull()){
+        	obj = array.get(0).getAsJsonObject();
+        }
+        Map<String, Float> result = new HashMap<String, Float>();
+        if(obj != null){
+	        String longitude = obj.get("lon").getAsString(); // works for url2
+	        String latitude = obj.get("lat").getAsString();
+	        result.put("longitude", Float.parseFloat(longitude));
+	        result.put("latitude", Float.parseFloat(latitude));
+        }else{//40.447694, -3.726656
+        	result.put("longitude", 40.447694);
+	        result.put("latitude", -3.726656);
+        }
         
 
-        Map<String, Float> result = new HashMap<String, Float>();
-        result.put("longitude", Float.parseFloat(longitude));
-        result.put("latitude", Float.parseFloat(latitude));
+        
+        
         
         return result;
     }
