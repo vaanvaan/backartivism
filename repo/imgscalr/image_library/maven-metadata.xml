@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <metadata>
-  <groupId>imgscalr</groupId>
-  <artifactId>image_library</artifactId>
-  <versioning>
-    <release>4.2</release>
-    <versions>
-      <version>4.2</version>
-    </versions>
-    <lastUpdated>20170503213148</lastUpdated>
-  </versioning>
+	<groupId>imgscalr</groupId>
+	<artifactId>image_library</artifactId>
+	<versioning>
+		<release>4.2</release>
+		<versions>
+			<version>4.2</version>
+		</versions>
+		<lastUpdated>20170503213148</lastUpdated>
+	</versioning>
 </metadata>
