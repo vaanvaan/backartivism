@@ -154,8 +154,8 @@ public class DirectoryGetter {
 	        result.put("longitude", Float.parseFloat(longitude));
 	        result.put("latitude", Float.parseFloat(latitude));
         }else{//40.447694, -3.726656
-        	result.put("longitude", 40.447694);
-	        result.put("latitude", -3.726656);
+        	result.put("longitude", new Float(40.447694));
+	        result.put("latitude", new Float(-3.726656));
         }
         
 
