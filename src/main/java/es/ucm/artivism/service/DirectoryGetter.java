@@ -69,6 +69,8 @@ public class DirectoryGetter {
 								Map<String, Float> geoData = invokeGeoService(location);
 								longitude = geoData.get("longitude");
 								latitude = geoData.get("latitude");
+								post.setLatitude(latitude);
+								post.setLongitude(longitude);
 							} catch (IOException e) {
 								System.out.println(e);
 								e.printStackTrace();
